@@ -1,0 +1,31 @@
+package entities;
+
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
+@Data
+public class DataBase {
+    private String name;
+    private HashMap<String, Table> tables;
+
+    public DataBase(String name) {
+        this.name = name;
+        this.tables = new HashMap<>();
+    }
+
+    public void addTable(Table table) {
+        this.tables.put(table.getName(), table);
+    }
+
+    public Table getTable(String name) {
+        return this.tables.get(name);
+    }
+
+    public void deleteTable(String name) {
+        this.tables.remove(name);
+    }
+}
