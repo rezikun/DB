@@ -2,12 +2,13 @@ package entities.types;
 
 import java.io.Serializable;
 
-public class StringType implements Type, Serializable, Comparable<StringType> {
+public class StringType implements Type, Serializable{
     private String data;
 
     public StringType() {
         this.data = "";
     }
+    public StringType(String data) { this.data = data;}
 
     @Override
     public TypeName getName() {
@@ -28,7 +29,7 @@ public class StringType implements Type, Serializable, Comparable<StringType> {
     }
 
     @Override
-    public int compareTo(StringType o) {
+    public int compareTo(Type o) {
         return this.data.compareTo(o.getData());
     }
 }

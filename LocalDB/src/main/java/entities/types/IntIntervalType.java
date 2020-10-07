@@ -5,7 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-public class IntIntervalType implements Type, Serializable, Comparable<IntIntervalType> {
+public class IntIntervalType implements Type, Serializable {
     @Data
     @AllArgsConstructor
     class Interval implements Serializable{
@@ -42,9 +42,10 @@ public class IntIntervalType implements Type, Serializable, Comparable<IntInterv
     }
 
     @Override
-    public int compareTo(IntIntervalType o) { // compare by interval length
+    public int compareTo(Type o) { // compare by interval length
+        IntIntervalType t = (IntIntervalType) o;
         Integer length1 = this.data.max - this.data.min;
-        Integer length2 = o.data.max - this.data.min;
+        Integer length2 = t.data.max - this.data.min;
         return length1.compareTo(length2);
     }
 }

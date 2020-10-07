@@ -28,11 +28,12 @@ public class DBService {
 //        System.out.println(db.getTables().get(0));
     }
 
-    public static void createDB(String name) {
+    public static DataBase createDB(String name) {
         DataBase db = new DataBase(name);
         currentDB = db;
 
         StorageHelper.createDBDir(name);
+        return db;
     }
 
     public static DataBase getDBByName(String name) {
@@ -41,11 +42,12 @@ public class DBService {
         return db;
     }
 
-    public static void createTable(String name, List<Column> columns) {
+    public static Table createTable(String name, List<Column> columns) {
         Table newTable = new Table(name, columns);
         currentDB.addTable(newTable);
 
         StorageHelper.serializeTable(newTable);
+        return newTable;
     }
 
     public static void deleteTable(String name) {
@@ -53,8 +55,21 @@ public class DBService {
         StorageHelper.deleteTableFile(name);
     }
 
-    public static void addRowToTable(Table table, HashMap<String, Type> row) {
+    public static List<Type> updateRow(Table table, Integer index, HashMap<String, Type> row) {
+        var updated = table.updateRow(index, row);
+        StorageHelper.serializeTable(table);
+        return updated;
+    }
+
+    public static List<Type> addRowToTable(Table table, HashMap<String, Type> row) {
         table.addRow();
-        table.updateRow(currentDB.getTables().size() - 1, row);
+        var updated = table.updateRow(currentDB.getTable(table.getName()).getRows().size() - 1, row);
+        StorageHelper.serializeTable(table);
+        return updated;
+    }
+
+    public static void deleteDB() {
+        StorageHelper.deleteDBDir(getCurrentDBName());
+        currentDB = null;
     }
 }

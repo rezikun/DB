@@ -15,20 +15,20 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         // create db with tables
-//        DBService.createDB("Test5");
-//        DBService.createTable("Users", List.of(new Column("name", TypeName.STRING)));
-//        var columns = new ArrayList<Column>();
-//        columns.add(new Column("string", TypeName.STRING));
-//        columns.add(new Column("char", TypeName.CHAR));
-//        columns.add(new Column("int", TypeName.INT));
-//        columns.add(new Column("real", TypeName.REAL));
-//        columns.add(new Column("text", TypeName.TEXT));
-//        columns.add(new Column("interval", TypeName.INT_INTERVAL));
-//        DBService.createTable("All types", columns);
+        DBService.createDB("Test6");
+        DBService.createTable("Users", List.of(new Column("name", TypeName.STRING)));
+        var columns = new ArrayList<Column>();
+        columns.add(new Column("string", TypeName.STRING));
+        columns.add(new Column("char", TypeName.CHAR));
+        columns.add(new Column("int", TypeName.INT));
+        columns.add(new Column("real", TypeName.REAL));
+        columns.add(new Column("text", TypeName.TEXT));
+        columns.add(new Column("interval", TypeName.INT_INTERVAL));
+        DBService.createTable("All types", columns);
 
         // deserialize db
         System.out.println("DESERIALIZE DB");
-        DataBase db = DBService.getDBByName("Test5");
+        DataBase db = DBService.getDBByName("Test6");
         System.out.println(db.getName());
         db.getTables().forEach((key, value) -> {
             System.out.println("Table " + key);
@@ -79,11 +79,13 @@ public class Main {
         b.setData(10);
         row.put("int", b);
         DBService.addRowToTable(tableAllTypes, row);
-        b.setData(4);
-        row.put("int", b);
+        IntType c = new IntType();
+        c.setData(4);
+        row.put("int", c);
         DBService.addRowToTable(tableAllTypes, row);
-        b.setData(8);
-        row.put("int", b);
+        IntType d = new IntType();
+        d.setData(8);
+        row.put("int", d);
         DBService.addRowToTable(tableAllTypes, row);
 
         System.out.println("\nBEFORE");
@@ -97,5 +99,6 @@ public class Main {
 
     private static void printRow(List<Type> row) {
         row.forEach(cell -> System.out.print(cell.getData() + " "));
+        System.out.println();
     }
 }

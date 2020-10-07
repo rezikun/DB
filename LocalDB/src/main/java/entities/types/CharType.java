@@ -2,7 +2,7 @@ package entities.types;
 
 import java.io.Serializable;
 
-public class CharType implements Type, Serializable, Comparable<CharType> {
+public class CharType implements Type, Serializable {
     private Character data;
 
     public CharType() {
@@ -28,7 +28,8 @@ public class CharType implements Type, Serializable, Comparable<CharType> {
     }
 
     @Override
-    public int compareTo(CharType o) {
-        return this.data.compareTo(o.data);
+    public int compareTo(Type o) {
+        CharType t = (CharType) o;
+        return this.data.compareTo(t.data);
     }
 }

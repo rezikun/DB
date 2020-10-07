@@ -26,7 +26,7 @@ public final class StorageHelper {
         }
     }
 
-    private static boolean dbIsUnique(String name) {
+    public static boolean dbIsUnique(String name) {
         File[] files = new File(storagePath).listFiles();
         if (files != null) {
             for (File file : files) {
@@ -85,10 +85,26 @@ public final class StorageHelper {
     }
 
     public static void deleteTableFile(String name) {
-        String path = System.getProperty("user.dir") + "/storage/" + DBService.getCurrentDBName() + "/" + name + ".dat";
+        String path = storagePath + DBService.getCurrentDBName() + "/" + name + ".dat";
         File file = new File(path);
         if (!file.delete()) {
             throw new RuntimeException("Error while deleting file");
+        }
+    }
+
+    public static void deleteDBDir(String name) {
+        String path = storagePath + name;
+        File file = new File(path);
+        File[] files = file.listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (!f.delete()) {
+                    throw new RuntimeException("Error while deleting " + f.getName() + " file");
+                }
+            }
+        }
+        if (!file.delete()) {
+            throw new RuntimeException("Error while deleting database " + file.getName() + " dir");
         }
     }
 }

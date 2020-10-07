@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class TextType implements Type, Serializable, Comparable<TextType> {
+public class TextType implements Type, Serializable {
     private String pathToFile;
     private File file;
 
@@ -45,7 +45,8 @@ public class TextType implements Type, Serializable, Comparable<TextType> {
     }
 
     @Override
-    public int compareTo(TextType o) {
-        return this.file.compareTo(o.file);
+    public int compareTo(Type o) {
+        TextType t = (TextType) o;
+        return this.file.compareTo(t.file);
     }
 }

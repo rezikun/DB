@@ -2,7 +2,7 @@ package entities.types;
 
 import java.io.Serializable;
 
-public class RealType implements Type, Serializable, Comparable<RealType> {
+public class RealType implements Type, Serializable {
     private Double data;
 
     public Double getRowData() {
@@ -32,7 +32,8 @@ public class RealType implements Type, Serializable, Comparable<RealType> {
     }
 
     @Override
-    public int compareTo(RealType o) {
-        return this.data.compareTo(o.data);
+    public int compareTo(Type o) {
+        RealType t = (RealType) o;
+        return this.data.compareTo(t.data);
     }
 }

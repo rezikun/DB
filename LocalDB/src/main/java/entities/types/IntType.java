@@ -2,12 +2,13 @@ package entities.types;
 
 import java.io.Serializable;
 
-public class IntType implements Type, Serializable, Comparable<IntType> {
+public class IntType implements Type, Serializable {
     private Integer data;
 
     public IntType() {
         this.data = 0;
     }
+    public IntType(Integer data) { this.data = data; }
 
     @Override
     public TypeName getName() {
@@ -28,7 +29,11 @@ public class IntType implements Type, Serializable, Comparable<IntType> {
     }
 
     @Override
-    public int compareTo(IntType o) {
-        return this.data.compareTo(o.data);
+    public int compareTo(Type o) {
+        if (o.getName() != TypeName.INT) {
+            throw new WrongTypeException(getName());
+        }
+        IntType t = (IntType) o;
+        return this.data.compareTo(t.data);
     }
 }

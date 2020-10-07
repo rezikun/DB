@@ -2,7 +2,6 @@ package entities;
 
 import entities.types.Mapper;
 import entities.types.Type;
-import entities.types.TypeFacade;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -28,6 +27,7 @@ public class Table implements Serializable {
         this.columnsNameToClass = new HashMap<>();
         this.columns = new HashMap<>();
         for (int i = 0; i < columns.size(); i++) {
+            System.out.println(columns.get(i) + " " + i);
             this.columns.put(columns.get(i), i);
             this.columnsNameToClass.put(columns.get(i).getName(),columns.get(i));
         }
@@ -79,14 +79,14 @@ public class Table implements Serializable {
         this.rows.add(newRow);
     }
 
-    public void updateRow(Integer index, HashMap<String, Type> row){
+    public List<Type> updateRow(Integer index, HashMap<String, Type> row){
         var currRow = this.rows.get(index);
         row.forEach((key, value) -> {
             var column = this.columnsNameToClass.get(key);
             var i = this.columns.get(column);
             currRow.set(i, value);
         });
-        this.rows.set(index, currRow);
+        return this.rows.set(index, currRow);
     }
 
     public void deleteRow(Integer index) {
@@ -97,12 +97,10 @@ public class Table implements Serializable {
         var column = this.columnsNameToClass.get(columnName);
         var index = this.columns.get(column);
         rows.sort(Comparator.comparing(o -> o.get(index)));
-        Collections.sort(rows, new Comparator<List<Type>>() {
-            @Override
-            public int compare(List<Type> o1, List<Type> o2) {
-                TypeFacade<o1.get(index).getClass()> t = new
-                var first = o1.get(index).
-            }
-        });
+    }
+
+    public Type getCellByRowAndColumn(Integer rowIndex, String columnName) {
+        Integer columnIndex = this.columns.get(this.columnsNameToClass.get(columnName));
+        return this.rows.get(rowIndex).get(columnIndex);
     }
 }
