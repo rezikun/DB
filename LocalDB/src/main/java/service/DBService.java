@@ -7,25 +7,32 @@ import entities.Table;
 import entities.types.Type;
 import helpers.StorageHelper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class DBService {
     private static DataBase currentDB;
 
-    public static String getCurrentDBName() {
-        return currentDB.getName();
+    public static List<String> getAllDataBasesNames() {
+        return StorageHelper.getAllDataBasesNames()
+                .stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
-    public static void main(String[] args) {
-        //works
-//        createDB("Test1");
-//        createTable("Users", List.of("Nick", "Olia"));
+    public static List<String> getTablesByDB(String name) {
+        var db = getDBByName(name);
+        return new ArrayList<>(db.getTables().keySet())
+                .stream()
+                .sorted()
+                .collect(Collectors.toList());
+    }
 
-        //works
-//        DataBase db = getDBByName("Test1");
-//        System.out.println(db.getName());
-//        System.out.println(db.getTables().get(0));
+    public static String getCurrentDBName() {
+        return currentDB.getName();
     }
 
     public static DataBase createDB(String name) {
@@ -40,6 +47,10 @@ public class DBService {
         DataBase db = StorageHelper.getDataBase(name);
         currentDB = db;
         return db;
+    }
+
+    public static Table getTable(String name) {
+        return currentDB.getTable(name);
     }
 
     public static Table createTable(String name, List<Column> columns) {
@@ -66,6 +77,11 @@ public class DBService {
         var updated = table.updateRow(currentDB.getTable(table.getName()).getRows().size() - 1, row);
         StorageHelper.serializeTable(table);
         return updated;
+    }
+
+    public static String setCellInTable(String tableName, Integer rowIndex, Integer columnIndex, Object value) {
+        Table t = DBService.getTable(tableName);
+        return t.setCellByRowAndColumn(rowIndex, columnIndex, value).getData();
     }
 
     public static void deleteDB() {

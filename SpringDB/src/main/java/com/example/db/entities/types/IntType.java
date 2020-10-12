@@ -1,4 +1,4 @@
-package entities.types;
+package com.example.db.entities.types;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;

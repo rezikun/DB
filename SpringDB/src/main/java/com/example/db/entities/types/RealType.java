@@ -1,61 +1,60 @@
-package entities.types;
+package com.example.db.entities.types;
 
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class IntType implements Type, Serializable {
-    private Integer data;
+public class RealType implements Type, Serializable {
+    private Double data;
 
-    public IntType() {
-        this.data = 0;
+    public Double getRowData() {
+        return this.data;
     }
-    public IntType(Integer data) { this.data = data; }
+
+    public RealType() {
+        this.data = 0.;
+    }
 
     @Override
     public TypeName getName() {
-        return TypeName.INT;
+        return TypeName.REAL;
     }
 
     @Override
     public Type setData(Object data) {
-        if (data.getClass().equals(Integer.class)) {
-            this.data = (int) data;
+        if (data.getClass().equals(Double.class)) {
+            this.data = (Double) data;
             return this;
         }
         if (data.getClass().equals(String.class)) {
             String check = (String) data;
             if (isValid(check)) {
-                this.data = Integer.parseInt(check);
+                this.data = Double.parseDouble(check);
                 return this;
             }
         }
-
-        throw new WrongTypeException(getName());
+        throw new WrongTypeException(this.getName());
     }
 
     private boolean isValid(String data) {
-        Pattern pattern = Pattern.compile("\\d+");
+        Pattern pattern = Pattern.compile("\\d+\\.\\d+");
         Matcher matcher = pattern.matcher(data);
         return matcher.matches();
     }
 
     @Override
     public String getData() {
-        return this.data.toString();
+        return data.toString();
     }
 
     @Override
     public Class getViewClass() {
-        return Integer.class;
+        return Double.class;
     }
 
     @Override
     public int compareTo(Type o) {
-        if (o.getName() != TypeName.INT) {
-            throw new WrongTypeException(getName());
-        }
-        IntType t = (IntType) o;
+        RealType t = (RealType) o;
         return this.data.compareTo(t.data);
     }
 }

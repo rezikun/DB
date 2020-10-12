@@ -1,5 +1,7 @@
 package entities.types;
 
+import entities.Column;
+
 public class Mapper {
     public static Type typeNameToType(TypeName name) {
         switch (name) {

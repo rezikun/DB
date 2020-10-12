@@ -1,6 +1,6 @@
-package entities.types;
+package com.example.db.entities.types;
 
-import helpers.StorageHelper;
+import com.example.db.helpers.StorageHelper;
 
 import java.io.File;
 import java.io.Serializable;
@@ -26,7 +26,7 @@ public class TextType implements Type, Serializable {
         if (data.getClass().equals(File.class)) {
             // save file to files folder
             File file = (File) data;
-            this.pathToFile = StorageHelper.saveTxtFile(file);
+            // this.pathToFile = StorageHelper.saveTxtFile(file); //TODO: important to save is somewhere
             this.file = file;
             return this;
         }

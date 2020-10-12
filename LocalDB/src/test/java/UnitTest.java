@@ -109,6 +109,6 @@ public class UnitTest {
         assertEquals(1, db.getTables().size());
         assertNotNull(db.getTables().get("Table"));
         assertEquals(table.getColumns(), db.getTables().get("Table").getColumns());
-        assertEquals(a.getData(), db.getTables().get("Table").getRows().get(0).get(0).getData());
+        assertEquals(a.getData(), db.getTables().get("Table").getRows().get(0).get(0));
     }
 }

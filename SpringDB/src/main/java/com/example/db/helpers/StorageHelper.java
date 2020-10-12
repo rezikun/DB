@@ -1,8 +1,8 @@
-package helpers;
+package com.example.db.helpers;
 
-import entities.DataBase;
-import entities.Table;
-import service.DBService;
+import com.example.db.entities.DataBase;
+import com.example.db.entities.Table;
+import com.example.db.services.DBService;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -42,15 +42,15 @@ public final class StorageHelper {
         return true;
     }
 
-    public static String saveTxtFile(File file) {
-        String path = storagePath + DBService.getCurrentDBName() + "/files/";
+    public static String saveTxtFile(File file, String dbName) {
+        String path = storagePath + dbName + "/files/";
         File txt = new File(path + file.getName());
         return txt.getAbsolutePath();
     }
 
-    public static void serializeTable(Table table) {
+    public static void serializeTable(Table table, String dbName) {
         try(ObjectOutputStream oos = new ObjectOutputStream(
-                new FileOutputStream("storage/" + DBService.getCurrentDBName() + "/" + table.getName() + ".dat")))
+                new FileOutputStream("storage/" + dbName + "/" + table.getName() + ".dat")))
         {
             oos.writeObject(table);
         }
@@ -89,8 +89,8 @@ public final class StorageHelper {
         }
     }
 
-    public static void deleteTableFile(String name) {
-        String path = storagePath + DBService.getCurrentDBName() + "/" + name + ".dat";
+    public static void deleteTableFile(String name, String dbName) {
+        String path = storagePath + dbName + "/" + name + ".dat";
         File file = new File(path);
         if (!file.delete()) {
             throw new RuntimeException("Error while deleting file");
