@@ -1,8 +1,8 @@
 package com.example.db.dto.table;
 
 import com.example.db.dto.column.ColumnDto;
-import com.example.db.entities.Column;
-import com.example.db.entities.Table;
+import com.example.db.database.entities.Column;
+import com.example.db.database.entities.Table;
 import lombok.Data;
 
 import java.util.List;

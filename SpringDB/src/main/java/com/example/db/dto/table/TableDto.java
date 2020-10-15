@@ -2,7 +2,7 @@ package com.example.db.dto.table;
 
 import com.example.db.dto.row.RowDto;
 import com.example.db.dto.column.ColumnDto;
-import com.example.db.entities.Table;
+import com.example.db.database.entities.Table;
 import lombok.Builder;
 import lombok.Data;
 

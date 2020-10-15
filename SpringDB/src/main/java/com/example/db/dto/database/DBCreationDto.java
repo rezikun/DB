@@ -1,7 +1,7 @@
 package com.example.db.dto.database;
 
 import com.example.db.dto.table.TableCreationDto;
-import com.example.db.entities.DataBase;
+import com.example.db.database.entities.DataBase;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

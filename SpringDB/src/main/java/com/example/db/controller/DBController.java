@@ -3,11 +3,15 @@ package com.example.db.controller;
 import com.example.db.dto.column.ColumnDto;
 import com.example.db.dto.database.DBCreationDto;
 import com.example.db.dto.database.DBDto;
-import com.example.db.dto.database.DBEmptyCreationDto;
-import com.example.db.entities.DataBase;
+import com.example.db.dto.database.DBNameDto;
+import com.example.db.database.entities.DataBase;
 import com.example.db.services.DBService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/db")
@@ -21,28 +25,22 @@ public class DBController {
 
     @PostMapping()
     public DBDto post(@RequestBody DBCreationDto dbCreationDto) {
-        DataBase db = dbService.createDB(dbCreationDto.getName());
-        dbCreationDto.getTables()
-                .forEach(tableCreationDto ->
-                        dbService.createTable(tableCreationDto.getName(),
-                                ColumnDto.toEntities(tableCreationDto.getColumns())));
-        return DBDto.fromEntity(db);
+        return dbService.create(dbCreationDto);
     }
 
-    @PostMapping("/empty")
-    public DBDto post(@RequestBody DBEmptyCreationDto dto) {
-        DataBase db = dbService.createDB(dto.getName());
-        return DBDto.fromEntity(db);
+    @GetMapping("/all")
+    public List<DBNameDto> all() {
+        return dbService.getAll();
     }
-
 
     @GetMapping("/{name}")
     public DBDto get(@PathVariable String name) {
-        return DBDto.fromEntity(dbService.getDBByName(name));
+        return dbService.getByName(name);
     }
 
     @DeleteMapping("/{name}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable String name) {
-        dbService.deleteDB(name);
+        dbService.delete(name);
     }
 }

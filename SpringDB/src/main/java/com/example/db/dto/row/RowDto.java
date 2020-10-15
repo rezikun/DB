@@ -1,6 +1,6 @@
 package com.example.db.dto.row;
 
-import com.example.db.entities.types.Type;
+import com.example.db.database.entities.types.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

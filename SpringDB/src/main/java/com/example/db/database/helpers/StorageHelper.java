@@ -1,24 +1,21 @@
-package com.example.db.helpers;
+package com.example.db.database.helpers;
 
-import com.example.db.entities.DataBase;
-import com.example.db.entities.Table;
-import com.example.db.services.DBService;
+import com.example.db.database.entities.DataBase;
+import com.example.db.database.entities.Table;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
-import java.util.concurrent.*;
 
 public final class StorageHelper {
     public static final String storagePath = System.getProperty("user.dir") + "/storage/";
 
-    public static void createDBDir(String name) {
+    public static void createDBDir(String name) throws RuntimeException {
         if (!dbIsUnique(name)) {
             throw new RuntimeException("Such db already exists");
         }
-        File storage = new File(storagePath + name);
-        boolean created = storage.mkdir();
+        File db = new File(storagePath + name);
+        boolean created = db.mkdir();
         if (!created) {
             throw new RuntimeException("Couldn’t create specified directory");
         }

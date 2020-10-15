@@ -1,6 +1,4 @@
-package com.example.db.entities.types;
-
-import com.example.db.helpers.StorageHelper;
+package com.example.db.database.entities.types;
 
 import java.io.File;
 import java.io.Serializable;

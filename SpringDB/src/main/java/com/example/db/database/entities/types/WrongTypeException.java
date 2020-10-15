@@ -1,4 +1,4 @@
-package com.example.db.entities.types;
+package com.example.db.database.entities.types;
 
 public class WrongTypeException extends RuntimeException{
     public WrongTypeException(TypeName name) {

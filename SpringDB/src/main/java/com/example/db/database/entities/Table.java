@@ -1,7 +1,7 @@
-package com.example.db.entities;
+package com.example.db.database.entities;
 
-import com.example.db.entities.types.Mapper;
-import com.example.db.entities.types.Type;
+import com.example.db.database.entities.types.Mapper;
+import com.example.db.database.entities.types.Type;
 import lombok.Data;
 
 import java.io.Serializable;

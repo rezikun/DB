@@ -1,7 +1,6 @@
-package com.example.db.entities;
+package com.example.db.database.entities;
 
 import lombok.Data;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

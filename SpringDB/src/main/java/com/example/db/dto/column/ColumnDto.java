@@ -1,7 +1,7 @@
 package com.example.db.dto.column;
 
-import com.example.db.entities.Column;
-import com.example.db.entities.types.Mapper;
+import com.example.db.database.entities.Column;
+import com.example.db.database.entities.types.Mapper;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

@@ -1,6 +1,6 @@
-package com.example.db.entities;
+package com.example.db.database.entities;
 
-import com.example.db.entities.types.TypeName;
+import com.example.db.database.entities.types.TypeName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

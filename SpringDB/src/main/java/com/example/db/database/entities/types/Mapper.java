@@ -1,6 +1,4 @@
-package com.example.db.entities.types;
-
-import com.example.db.entities.Column;
+package com.example.db.database.entities.types;
 
 public class Mapper {
     public static Type typeNameToType(TypeName name) {

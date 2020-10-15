@@ -1,13 +1,10 @@
-package com.example.db.entities;
+package com.example.db.database.entities;
 
-import com.example.db.entities.types.Type;
+import com.example.db.database.entities.types.Type;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Data
 public class Row implements Serializable {
