@@ -149,6 +149,10 @@ public class Table implements Serializable {
         return newValue;
     }
 
+    public Integer getIndexByColumnName(String name) {
+        return this.columns.get(this.columnsNameToClass.get(name));
+    }
+
     public Column getColumnByName(String name) {
         return this.columnsNameToClass.get(name);
     }

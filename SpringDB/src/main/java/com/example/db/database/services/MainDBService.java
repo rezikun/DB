@@ -3,12 +3,14 @@ package com.example.db.database.services;
 import com.example.db.database.entities.Column;
 import com.example.db.database.entities.DataBase;
 import com.example.db.database.entities.Table;
+import com.example.db.database.entities.types.Mapper;
 import com.example.db.database.entities.types.Type;
 import com.example.db.database.helpers.StorageHelper;
 import com.example.db.exceptions.NotOpenDatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -143,6 +145,21 @@ public class MainDBService {
         }
         Table t = currentDB.getTable(tableName);
         return t.sortByColumn(columnName);
+    }
+
+    public Table addColumnToTable(String tableName, String columnName, String columnType) {
+        Table table = this.currentDB.getTable(tableName);
+        table.addColumn(new Column(columnName, Mapper.toType(columnType)));
+        return table;
+    }
+
+    public Table storeFileType(String tableName, String columnName, Integer row,  byte[] file) {
+        Table table = currentDB.getTable(tableName);
+        Integer col = table.getIndexByColumnName(columnName);
+        String fileName = tableName + "_file_col_" + columnName + "_row" + row.toString();
+        File savedFile = StorageHelper.saveTxtFile(file, fileName, getCurrentDBName());
+        table.setCellByRowAndColumn(row, col, savedFile);
+        return table;
     }
 
     public void save() {

@@ -1,6 +1,7 @@
 package com.example.db.controller;
 
 import com.example.db.components.TableModelAssembler;
+import com.example.db.dto.column.ColumnDto;
 import com.example.db.dto.database.DBNameDto;
 import com.example.db.dto.row.RowCreateDto;
 import com.example.db.dto.table.TableCreationDto;
@@ -13,8 +14,11 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,6 +91,24 @@ public class TableControllerRest {
                                            @RequestParam(name = "column") String columnName)
             throws NotOpenDatabaseException {
         return assembler.toModel(tableService.sortByColumn(name, columnName));
+    }
+
+    @PutMapping("/{name}/column")
+    public EntityModel<TableDto> addColumn(@PathVariable String name, @RequestBody ColumnDto dto) {
+        return assembler.toModel(tableService.addColumn(name, dto));
+    }
+
+    @PutMapping("/{name}/file")
+    public EntityModel<TableDto> loadFile(@PathVariable String name,
+                                          @RequestParam("file") MultipartFile file,
+                                          @RequestParam("column") String columnName,
+                                          @RequestParam("rowId") Integer row,
+                                          RedirectAttributes redirectAttributes) throws IOException {
+        TableDto tableDto = tableService.storeFileCell(name, columnName, row, file.getBytes());
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        return assembler.toModel(tableDto);
     }
 
     @ResponseStatus(value=HttpStatus.FORBIDDEN,

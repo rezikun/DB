@@ -3,8 +3,11 @@ package com.example.db.services;
 import com.example.db.database.services.MainDBService;
 import com.example.db.dto.row.RowCreateDto;
 import com.example.db.dto.row.RowDto;
+import com.example.db.dto.table.TableDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class RowService {

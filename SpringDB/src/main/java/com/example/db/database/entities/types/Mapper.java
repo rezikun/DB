@@ -33,7 +33,7 @@ public class Mapper {
         if (type.toLowerCase().equals("char")) {
             return TypeName.CHAR;
         }
-        if (type.toLowerCase().equals("text")) {
+        if (type.toLowerCase().equals("text") || type.toLowerCase().equals("file")) {
             return TypeName.TEXT;
         }
         if (type.toLowerCase().equals("interval")) {

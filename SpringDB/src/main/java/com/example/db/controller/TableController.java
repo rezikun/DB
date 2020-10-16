@@ -1,5 +1,6 @@
 package com.example.db.controller;
 
+import com.example.db.dto.column.ColumnDto;
 import com.example.db.dto.row.RowCreateDto;
 import com.example.db.dto.table.TableCreationDto;
 import com.example.db.dto.table.TableDto;
@@ -60,6 +61,11 @@ public class TableController {
     @PutMapping("/{name}/sort")
     public TableDto getSorted(@PathVariable String name, @RequestParam(name = "column") String columnName) {
         return tableService.sortByColumn(name, columnName);
+    }
+
+    @PutMapping("/{name}/column")
+    public TableDto addColumn(@PathVariable String name, @RequestBody ColumnDto dto) {
+        return tableService.addColumn(name, dto);
     }
 
     @ResponseStatus(value=HttpStatus.FORBIDDEN,

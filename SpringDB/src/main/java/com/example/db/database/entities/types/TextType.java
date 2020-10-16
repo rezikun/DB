@@ -1,6 +1,8 @@
 package com.example.db.database.entities.types;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -22,9 +24,8 @@ public class TextType implements Type, Serializable {
     @Override
     public Type setData(Object data) {
         if (data.getClass().equals(File.class)) {
-            // save file to files folder
             File file = (File) data;
-            // this.pathToFile = StorageHelper.saveTxtFile(file); //TODO: important to save is somewhere
+            this.pathToFile = file.getAbsolutePath();
             this.file = file;
             return this;
         }
@@ -45,6 +46,18 @@ public class TextType implements Type, Serializable {
         } catch (Exception e) {
             throw new RuntimeException("Reading file failed");
         }
+    }
+
+    public static void printContent(File file) throws Exception {
+        System.out.println("Print File Content");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String line = null;
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+
+        br.close();
     }
 
     @Override

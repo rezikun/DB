@@ -39,10 +39,17 @@ public final class StorageHelper {
         return true;
     }
 
-    public static String saveTxtFile(File file, String dbName) {
+    public static File saveTxtFile(byte[] bytes, String fileName, String dbName) {
         String path = storagePath + dbName + "/files/";
-        File txt = new File(path + file.getName());
-        return txt.getAbsolutePath();
+        File txt = new File(path + fileName + ".txt");
+        try {
+            OutputStream os = new FileOutputStream(txt);
+            os.write(bytes);
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return txt;
     }
 
     public static void serializeTable(Table table, String dbName) {
