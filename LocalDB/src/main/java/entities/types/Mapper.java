@@ -21,4 +21,25 @@ public class Mapper {
                 throw new RuntimeException("This type is not supported");
         }
     }
+    public static TypeName toType(String type) {
+        if (type.toLowerCase().equals("int")) {
+            return TypeName.INT;
+        }
+        if (type.toLowerCase().equals("string")) {
+            return TypeName.STRING;
+        }
+        if (type.toLowerCase().equals("real")) {
+            return TypeName.REAL;
+        }
+        if (type.toLowerCase().equals("char")) {
+            return TypeName.CHAR;
+        }
+        if (type.toLowerCase().equals("text") || type.toLowerCase().equals("file")) {
+            return TypeName.TEXT;
+        }
+        if (type.toLowerCase().equals("interval")) {
+            return TypeName.INT_INTERVAL;
+        }
+        throw new RuntimeException("No such type: " + type);
+    }
 }

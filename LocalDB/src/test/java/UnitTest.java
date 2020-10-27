@@ -64,14 +64,13 @@ public class UnitTest {
         testTable.updateRow(0, row);
 
         assertThat(testTable.getRows().size(), is(1));
-        assertThat(testTable.getColumns().get(columns.get(0)), is(0));
-        assertThat(testTable.getRows().get(0), is(List.of(a, b)));
+        assertThat(testTable.getColumns().get(0).getName(), is("string"));
+        assertThat(testTable.getRows().get(0), is(List.of("New data", "A")));
     }
 
     @Test
     public void sortTableTest() {
         var columns = new ArrayList<Column>();
-        columns.add(new Column("string", TypeName.STRING));
         columns.add(new Column("int", TypeName.INT));
         Table testTable = DBService.createTable("test", columns);
         var row = new HashMap<String, Type>();
@@ -87,11 +86,11 @@ public class UnitTest {
         var row0 = testTable.getRows().get(0);
 
         assertThat(a.getData(), is(testTable.getCellByRowAndColumn(1, "int").getData()));
-        assertThat(testTable.getRows(), is(List.of(row0, row1, row2, row3)));
+        assertThat(testTable.getRows(), is(List.of(List.of("0"), List.of("10"), List.of("4"), List.of("8"))));
 
         testTable.sortByColumn("int");
 
-        assertThat(testTable.getRows(), is(List.of(row0, row2, row3, row1)));
+        assertThat(testTable.getRows(), is(List.of(List.of("0"), List.of("4"), List.of("8"), List.of("10"))));
     }
 
     @Test

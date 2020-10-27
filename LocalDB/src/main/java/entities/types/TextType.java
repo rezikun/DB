@@ -26,7 +26,7 @@ public class TextType implements Type, Serializable {
         if (data.getClass().equals(File.class)) {
             // save file to files folder
             File file = (File) data;
-            this.pathToFile = StorageHelper.saveTxtFile(file);
+            this.pathToFile = file.getAbsolutePath();
             this.file = file;
             return this;
         }
@@ -38,15 +38,19 @@ public class TextType implements Type, Serializable {
     }
 
     @Override
-    public String getData() { // read file and return content
+    public String getData() {
         if (this.pathToFile.isEmpty()) {
             return "No file";
         }
         try {
-            return Files.readString(Paths.get(this.pathToFile), StandardCharsets.US_ASCII);
+            return "File: \"" + Files.readString(Paths.get(this.pathToFile), StandardCharsets.US_ASCII) + "\"";
         } catch (Exception e) {
             throw new RuntimeException("Reading file failed");
         }
+    }
+
+    public String getPathToFile() {
+        return pathToFile;
     }
 
     @Override

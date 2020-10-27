@@ -5,10 +5,13 @@ import entities.Table;
 import service.DBService;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
-import java.util.concurrent.*;
+import static java.nio.file.StandardCopyOption.*;
 
 public final class StorageHelper {
     public static final String storagePath = System.getProperty("user.dir") + "/storage/";
@@ -42,10 +45,21 @@ public final class StorageHelper {
         return true;
     }
 
-    public static String saveTxtFile(File file) {
-        String path = storagePath + DBService.getCurrentDBName() + "/files/";
-        File txt = new File(path + file.getName());
-        return txt.getAbsolutePath();
+    public static File saveTxtFile(File file, String fileName, String dbName) throws IOException {
+        String path = storagePath + dbName + "/files/" + fileName + ".txt";
+        Path toFile = Files.copy(Path.of(file.getAbsolutePath()), Path.of(path), REPLACE_EXISTING);
+        return new File(toFile.toString());
+    }
+
+    public static String readTxtFile(String path) {
+        if (path.isEmpty()) {
+            return "No file";
+        }
+        try {
+            return Files.readString(Paths.get(path), StandardCharsets.US_ASCII);
+        } catch (Exception e) {
+            throw new RuntimeException("Reading file failed");
+        }
     }
 
     public static void serializeTable(Table table) {

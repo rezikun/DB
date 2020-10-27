@@ -2,6 +2,7 @@ package entities;
 
 import entities.types.Mapper;
 import entities.types.Type;
+import entities.types.TypeName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -136,6 +137,10 @@ public class Table implements Serializable {
         rows.sort(Comparator.comparing(o -> o.get(index)));
     }
 
+    public void sortByColumnIndex(Integer columnIndex) {
+        rows.sort(Comparator.comparing(o -> o.get(columnIndex)));
+    }
+
     public Type getCellByRowAndColumn(Integer rowIndex, String columnName) {
         Integer columnIndex = this.columns.get(this.columnsNameToClass.get(columnName));
         return this.rows.get(rowIndex).get(columnIndex);
@@ -146,5 +151,18 @@ public class Table implements Serializable {
         Type newValue = Mapper.typeNameToType(oldValue.getName()).setData(value);
         this.rows.get(rowIndex).set(columnIndex, newValue);
         return newValue;
+    }
+
+    public Integer getIndexByColumnName(String name) {
+        return this.columns.get(this.columnsNameToClass.get(name));
+    }
+
+    public Column getColumnByName(String name) {
+        return this.columnsNameToClass.get(name);
+    }
+
+    public Type getCellByString(String colName, String value) {
+        Column col = this.getColumnByName(colName);
+        return Mapper.typeNameToType(col.getType()).setData(value);
     }
 }

@@ -1,23 +1,19 @@
 package form;
 
 import javax.swing.*;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
-import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
-import java.util.Enumeration;
 
 public class MainPanel extends JPanel {
 
     private JTree tree;
-    private TablePane table;
+    private TablePanel table;
 
     public MainPanel() {
-        tree = DataBaseTree.getInstance();
+        tree = DataBaseTree.getTreeInstance();
 
         JScrollPane treeView = new JScrollPane(tree);
 
-        table = TablePane.getInstance();
+        table = TablePanel.getInstance();
 
         JScrollPane tableView = new JScrollPane(table);
 

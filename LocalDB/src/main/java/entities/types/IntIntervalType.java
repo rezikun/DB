@@ -38,7 +38,6 @@ public class IntIntervalType implements Type, Serializable {
             }
             this.data = val;
             return this;
-
         }
         if (data.getClass().equals(String.class)) {
             String check = (String) data;
@@ -46,12 +45,13 @@ public class IntIntervalType implements Type, Serializable {
                 this.data = this.fromString(check);
                 return this;
             }
+            System.out.println("no");
         }
         throw new WrongTypeException(this.getName());
     }
 
     private boolean isValid(String data) {
-        Pattern pattern = Pattern.compile("\\[?\\d+[ .,]\\d+\\]?");
+        Pattern pattern = Pattern.compile("\\[?\\d+\\s?[ ,]\\s?\\d+\\]?");
         Matcher matcher = pattern.matcher(data);
         return matcher.matches();
     }
@@ -62,9 +62,6 @@ public class IntIntervalType implements Type, Serializable {
         List<String> allMatches = new ArrayList<>();
         while (matcher.find()) {
             allMatches.add(matcher.group());
-        }
-        if (allMatches.size() != 1) {
-            throw new RuntimeException("Wrong interval");
         }
         var result = allMatches.stream().map(Integer::parseInt).collect(Collectors.toList());
         if (result.get(0) > result.get(1)) {
