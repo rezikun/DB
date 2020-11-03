@@ -1,0 +1,11 @@
+type DatabaseEntity {
+id: ID!,
+name: String
+}
+type Query {
+database(id: Int): DatabaseEntity
+databases():[DatabaseEntity]
+}
+type Mutation {
+create(name: String!):DatabaseEntity
+}
