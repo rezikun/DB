@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Deprecated
 public class DBService {
 
     private final MainDBService mainDBService;
@@ -34,7 +35,7 @@ public class DBService {
         dbCreationDto.getTables()
                 .forEach(tableCreationDto ->
                         mainDBService.createTable(tableCreationDto.getName(),
-                                ColumnDto.toEntities(tableCreationDto.getColumns())));
+                                ColumnDto.toEntities(tableCreationDto.getColumns(), true)));
         return DBDto.fromEntity(db.get());
     }
 
@@ -51,5 +52,4 @@ public class DBService {
     public void delete(String name) throws NotOpenDatabaseException{
         mainDBService.deleteDB(name);
     }
-
 }

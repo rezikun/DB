@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 // this service has information about current db downloaded
 // TODO: make it remote interface for rmi
 @Service
+@Deprecated
 public class MainDBService {
     private DataBase currentDB;
 

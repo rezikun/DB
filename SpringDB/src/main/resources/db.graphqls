@@ -1,11 +1,44 @@
 type DatabaseEntity {
-id: ID!,
-name: String
+    id: ID!,
+    name: String!,
+    tables: [TableEntity]
+}
+type TableEntity {
+    id: ID!,
+    name: String!,
+    columns: [ColumnEntity]
+    rows: [RowEntity]
+}
+type RowEntity {
+    id: ID!,
+    values: [Type]
+}
+type ColumnEntity {
+    id: ID!,
+    type: String!,
+    name: String!,
+    min: Int,
+    max: Int
+}
+type Type {
+    id: ID!,
+    data: String!,
+    file: String
 }
 type Query {
-database(id: Int): DatabaseEntity
-databases():[DatabaseEntity]
+    database(id: Int):DatabaseEntity
+    databases(size: Int):[DatabaseEntity]
+    tables(databaseId: Int!):[TableEntity]
+    table(id: Int!):TableEntity
+    columns(tableId: Int):[ColumnEntity]
+    rows(tableId: Int, count: Int):[RowEntity]
 }
 type Mutation {
-create(name: String!):DatabaseEntity
+    createDatabase(name: String):DatabaseEntity
+    deleteDatabase(id: Int):Boolean
+    createTable(databaseId: Int!, name: String!):TableEntity
+    createColumn(name: String, type: String, tableId: Int!, min: Int, max: Int):ColumnEntity
+    addRow(tableId: Int!):RowEntity
+    setValue(rowId: Int!, columnId: Int!, data: String!):Type
+    sort(tableId: Int!, columnId: Int):TableEntity
 }

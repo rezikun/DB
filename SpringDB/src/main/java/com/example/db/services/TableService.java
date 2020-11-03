@@ -12,11 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
+@Deprecated
 public class TableService {
 
     private final MainDBService mainDBService;
@@ -27,7 +26,7 @@ public class TableService {
     }
 
     public TableDto create(TableCreationDto dto) throws NotOpenDatabaseException {
-        var table = mainDBService.createTable(dto.getName(), ColumnDto.toEntities(dto.getColumns()));
+        var table = mainDBService.createTable(dto.getName(), ColumnDto.toEntities(dto.getColumns(), true));
         return TableDto.fromEntity(table);
     }
 

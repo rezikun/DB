@@ -15,7 +15,7 @@ public class DBCreationDto {
 
     public static DataBase toEntity(DBCreationDto dto){
         DataBase db = new DataBase(dto.getName());
-        dto.tables.forEach(table -> db.addTable(TableCreationDto.toEntity(table)));
+        dto.tables.forEach(table -> db.addTable(TableCreationDto.toEntity(table, true)));
         return db;
     }
 }

@@ -45,7 +45,6 @@ public class IntIntervalType implements Type, Serializable {
                 this.data = this.fromString(check);
                 return this;
             }
-            System.out.println("no");
         }
         throw new WrongTypeException(this.getName());
     }

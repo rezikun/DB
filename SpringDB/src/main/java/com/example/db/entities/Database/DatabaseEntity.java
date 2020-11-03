@@ -1,6 +1,5 @@
 package com.example.db.entities.Database;
 
-import com.example.db.entities.DBList.DBList;
 import com.example.db.entities.Table.TableEntity;
 import lombok.Data;
 
@@ -9,19 +8,15 @@ import java.util.List;
 
 @Data
 @Entity
-public class Database {
+@Table(name="databases", schema = "public")
+public class DatabaseEntity {
     @Id
-    @Column(name = "ID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column
+    @Column(name="db_name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "database")
+    @OneToMany(mappedBy = "database", fetch = FetchType.EAGER)
     private List<TableEntity> tables;
-
-    @ManyToOne
-    @JoinColumn(name="db_id", nullable = false)
-    private DBList list;
 }

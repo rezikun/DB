@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 public class RowDto {
     private List<String> row;
 
-    public static List<RowDto> fromEntities(List<List<String>> rows) {
+    @Deprecated
+    public static List<RowDto> fromEntities(List<List<String>> rows, boolean old) {
         return rows.stream()
                 .map(RowDto::new)
                 .collect(Collectors.toList());
@@ -24,4 +25,18 @@ public class RowDto {
                 .map(Type::getData)
                 .collect(Collectors.toList()));
     }
+
+//    public static RowDto fromEntity(Row row) {
+//        return new RowDto(
+//                row.getRow().stream()
+//                .map(BaseType::getData)
+//                .collect(Collectors.toList())
+//        );
+//    }
+
+//    public static List<RowDto> fromEntities(List<Row> rows) {
+//        return rows.stream()
+//                .map(RowDto::fromEntity)
+//                .collect(Collectors.toList());
+//    }
 }

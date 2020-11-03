@@ -1,7 +1,7 @@
 package com.example.db.entities.Row;
 
 import com.example.db.entities.Table.TableEntity;
-import com.example.db.entities.Type.Base.BaseType;
+import com.example.db.entities.Type.ValueType;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -9,15 +9,15 @@ import java.util.List;
 
 @Data
 @Entity
-@Table(name="rows")
-public class Row {
+@Table(name="rows", schema = "public")
+public class RowEntity {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @OneToMany(mappedBy = "row")
-    private List<BaseType> values;
+    @OneToMany(mappedBy = "row", fetch = FetchType.EAGER)
+    private List<ValueType> values;
 
     @ManyToOne
     @JoinColumn(name="table_id", nullable = false)

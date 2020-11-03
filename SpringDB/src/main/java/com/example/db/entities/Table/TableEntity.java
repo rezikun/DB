@@ -1,33 +1,36 @@
 package com.example.db.entities.Table;
 
-import com.example.db.database.entities.types.Type;
-import com.example.db.entities.Column.ColumnData;
-import com.example.db.entities.Database.Database;
-import com.example.db.entities.Row.Row;
+import com.example.db.entities.Column.ColumnEntity;
+import com.example.db.entities.Database.DatabaseEntity;
+import com.example.db.entities.Row.RowEntity;
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Data
 @Entity
-@javax.persistence.Table(name = "tables")
-public class Table {
+@Table(name="db_tables", schema = "public")
+public class TableEntity {
     @Id
-    @Column(name = "ID", nullable = false)
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column
+    @Column(name="table_name")
     private String name;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "table")
-    private List<Row> rows;
+    private List<RowEntity> rows;
 
+    @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(mappedBy = "table")
-    private List<ColumnData> columns;
+    private List<ColumnEntity> columns;
 
     @ManyToOne
     @JoinColumn(name="database_id", nullable = false)
-    private Database database;
+    private DatabaseEntity database;
 }
