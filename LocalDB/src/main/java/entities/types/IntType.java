@@ -13,6 +13,12 @@ public class IntType implements Type, Serializable {
     public IntType(Integer data) { this.data = data; }
 
     @Override
+    public boolean equals(Object obj) {
+        IntType i = (IntType) obj;
+        return data.equals(i.data);
+    }
+
+    @Override
     public TypeName getName() {
         return TypeName.INT;
     }

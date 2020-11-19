@@ -1,41 +1,35 @@
 package entities.types;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
-public class RealType implements Type, Serializable {
-    private Double data;
+public class EmailType implements Type, Serializable {
 
-    public Double getRowData() {
-        return this.data;
-    }
-
-    public RealType() {
-        this.data = 0.;
-    }
+    private String data;
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+        Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
     @Override
     public boolean equals(Object obj) {
-        RealType r = (RealType) obj;
-        return data.equals(r.data);
+        EmailType s = (EmailType) obj;
+        return data.equals(s.data);
     }
 
     @Override
     public TypeName getName() {
-        return TypeName.REAL;
+        return TypeName.EMAIL;
     }
 
     @Override
     public Type setData(Object data) {
-        if (data.getClass().equals(Double.class)) {
-            this.data = (Double) data;
-            return this;
-        }
         if (data.getClass().equals(String.class)) {
             String check = (String) data;
             if (isValid(check)) {
-                this.data = Double.parseDouble(check);
+                this.data = check;
                 return this;
             }
         }
@@ -43,24 +37,24 @@ public class RealType implements Type, Serializable {
     }
 
     private boolean isValid(String data) {
-        Pattern pattern = Pattern.compile("\\d+\\.\\d+");
-        Matcher matcher = pattern.matcher(data);
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(data);
         return matcher.matches();
     }
 
     @Override
     public String getData() {
-        return data.toString();
+        return data;
     }
 
     @Override
     public Class getViewClass() {
-        return Double.class;
+        return String.class;
     }
 
     @Override
-    public int compareTo(Type o) {
-        RealType t = (RealType) o;
+    public int compareTo(Type o) { // compare by interval length
+        EmailType t = (EmailType) o;
         return this.data.compareTo(t.data);
     }
+
 }

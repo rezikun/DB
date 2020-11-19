@@ -1,6 +1,5 @@
 package service;
 
-import entities.Cell;
 import entities.Column;
 import entities.DataBase;
 import entities.Table;
@@ -14,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -103,6 +102,7 @@ public class DBService {
         return db;
     }
 
+
     public static Table getTable(String name) {
         return currentDB.getTable(name);
     }
@@ -114,7 +114,13 @@ public class DBService {
         StorageHelper.serializeTable(newTable);
         return newTable;
     }
+    public static Table createTable(String name, List<List<Type>> rows, List<Column> columns) {
+        Table newTable = new Table(name, rows, columns);
+        currentDB.addTable(newTable);
 
+        StorageHelper.serializeTable(newTable);
+        return newTable;
+    }
     public static void deleteTable(String name) {
         currentDB.deleteTable(name);
         StorageHelper.deleteTableFile(name);
@@ -134,14 +140,6 @@ public class DBService {
 
     public static List<Type> updateRow(Table table, Integer index, HashMap<String, Type> row) {
         var updated = table.updateRow(index, row);
-        StorageHelper.serializeTable(table);
-        return updated;
-    }
-
-    public List<Type> updateRow(Table table, Integer index, Map<String, String> row) {
-        HashMap<String, Type> newRow = new HashMap<>();
-        row.forEach((colName, value) -> newRow.put(colName, table.getCellByString(colName, value)));
-        var updated = table.updateRow(index, newRow);
         StorageHelper.serializeTable(table);
         return updated;
     }
@@ -195,6 +193,20 @@ public class DBService {
 
     public static boolean isFileColumn(String tableName, Integer columnIndex) {
         Table table = currentDB.getTable(tableName);
-        return table.getColumns().get(columnIndex).getType().equals(TypeName.TEXT);
+        return table.getColumns().get(columnIndex).getType().equals(TypeName.ENUM);
+    }
+
+    public static Table subtract(List<String> tableNames) {
+        Table currentSubtractionResult = currentDB.getTable(tableNames.iterator().next());
+        int counter = 0;
+        for (String tableName : tableNames) {
+            if (counter == 0) {
+                counter++;
+                continue;
+            }
+            currentSubtractionResult =
+                Table.subtract(currentSubtractionResult, currentDB.getTable(tableName));
+        }
+        return currentSubtractionResult;
     }
 }

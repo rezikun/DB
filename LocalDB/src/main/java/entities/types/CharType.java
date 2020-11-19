@@ -10,6 +10,12 @@ public class CharType implements Type, Serializable {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        CharType c = (CharType) obj;
+        return data.equals(c.data);
+    }
+
+    @Override
     public TypeName getName() {
         return TypeName.CHAR;
     }

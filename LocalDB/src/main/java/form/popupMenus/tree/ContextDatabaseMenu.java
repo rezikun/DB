@@ -2,6 +2,7 @@ package form.popupMenus.tree;
 
 import form.CreateTableFrame;
 import form.DataBaseTree;
+import form.SubstractTablesCheckBoxFrame;
 import service.DBService;
 
 import javax.swing.*;
@@ -11,6 +12,7 @@ import java.awt.event.ActionListener;
 public class ContextDatabaseMenu extends JPopupMenu implements ActionListener {
     JMenuItem addTableItem;
     JMenuItem deleteDBItem;
+    JMenuItem subtractTables;
     String databaseName;
     public ContextDatabaseMenu() {
         addTableItem = new JMenuItem("Add table");
@@ -22,6 +24,11 @@ public class ContextDatabaseMenu extends JPopupMenu implements ActionListener {
         deleteDBItem.addActionListener(this);
         deleteDBItem.setActionCommand("deleteDB");
         add(deleteDBItem);
+
+        subtractTables = new JMenuItem("Subtract tables");
+        subtractTables.addActionListener(this);
+        subtractTables.setActionCommand("subtract");
+        add(subtractTables);
     }
 
     public void setDatabaseName(String name) {
@@ -38,5 +45,9 @@ public class ContextDatabaseMenu extends JPopupMenu implements ActionListener {
             DBService.deleteDB(databaseName);
             DataBaseTree.getInstance().revalidateTree();
         }
+        if ("subtract".equals(e.getActionCommand())) {
+            SubstractTablesCheckBoxFrame frame = new SubstractTablesCheckBoxFrame(databaseName);
+        }
     }
+
 }

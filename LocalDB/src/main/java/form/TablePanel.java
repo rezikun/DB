@@ -1,6 +1,7 @@
 package form;
 
 import entities.Table;
+import entities.types.WrongTypeException;
 import form.popupMenus.table.PopupTableListener;
 import form.popupMenus.tree.PopupTreeListener;
 import service.DBService;
@@ -62,21 +63,19 @@ public class TablePanel extends JPanel implements TableModelListener, CellEditor
         // String columnName = model.getColumnName(column);
         // Object data = model.getValueAt(row, column);
 
-        JOptionPane.showMessageDialog(getParent(),
-                "in tableChanged");
         // Do something with the data...
     }
 
     @Override
     public void editingStopped(ChangeEvent e) {
-        JOptionPane.showMessageDialog(getParent(),
-                e.getSource());
+        // JOptionPane.showMessageDialog(getParent(),
+        //         e.getSource());
     }
 
     @Override
     public void editingCanceled(ChangeEvent e) {
-        JOptionPane.showMessageDialog(getParent(),
-                "in editingCanceled");
+        // JOptionPane.showMessageDialog(getParent(),
+        //         "in editingCanceled");
     }
 
     public void hideTable(String tableName) {
@@ -147,6 +146,9 @@ public class TablePanel extends JPanel implements TableModelListener, CellEditor
         @Override
         public boolean isCellEditable(int rowIndex, int columnIndex)
         {
+            if (tableName.equals("IMMUTABLE")) {
+                return false;
+            }
             return columnIndex != 0;
         }
 
@@ -159,10 +161,14 @@ public class TablePanel extends JPanel implements TableModelListener, CellEditor
                         + value.getClass() + ")");
             }
             // col - 1 because of number column
-            String cellDisplay = DBService.setCellInTable(tableName, row, col - 1, value);
-            data.get(row).set(col, cellDisplay);
-            fireTableCellUpdated(row, col);
-
+            try {
+                String cellDisplay = DBService.setCellInTable(tableName, row, col - 1, value);
+                data.get(row).set(col, cellDisplay);
+                fireTableCellUpdated(row, col);
+            } catch (WrongTypeException e) {
+                JOptionPane.showMessageDialog(getParent(),
+                    "Invalid value.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
             if (DEBUG) {
                 System.out.println("New value of data:");
                 printDebugData();
@@ -196,6 +202,20 @@ public class TablePanel extends JPanel implements TableModelListener, CellEditor
         this.setTableName(name);
         table.setModel(new TableModel(t.getRows(), t.getColumnsName(), t.getViewTypes()));
         tableModel.fireTableStructureChanged();
+    }
+
+    public void setSubtractTable(Table t) {
+        setVisible(true);
+        TableModel tableModel = (TableModel) table
+            .getModel();
+        this.setTableName("IMMUTABLE");
+        if (t.getRows().size() == 0) {
+            JOptionPane.showMessageDialog(this,
+                "The result is an empty table.");
+        } else {
+            table.setModel(new TableModel(t.getRows(), t.getColumnsName(), t.getViewTypes()));
+            tableModel.fireTableStructureChanged();
+        }
     }
 
     public static void setJTableColumnsWidth(JTable table, int tablePreferredWidth,

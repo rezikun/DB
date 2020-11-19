@@ -40,8 +40,8 @@ public class UnitTest {
         columns.add(new Column("char", TypeName.CHAR));
         columns.add(new Column("int", TypeName.INT));
         columns.add(new Column("real", TypeName.REAL));
-        columns.add(new Column("text", TypeName.TEXT));
-        columns.add(new Column("interval", TypeName.INT_INTERVAL));
+        columns.add(new Column("enum", TypeName.ENUM, List.of("BOB", "JOKE")));
+        columns.add(new Column("email", TypeName.EMAIL));
         Table newTable = DBService.createTable("All types", columns);
         assertThat("All types", is(newTable.getName()));
         assertThat(newTable.getColumns().size(), is(6));
@@ -69,28 +69,18 @@ public class UnitTest {
     }
 
     @Test
-    public void sortTableTest() {
+    public void subtractTablesTest() {
         var columns = new ArrayList<Column>();
-        columns.add(new Column("int", TypeName.INT));
-        Table testTable = DBService.createTable("test", columns);
-        var row = new HashMap<String, Type>();
-        IntType a = new IntType(10);
-        row.put("int", a);
-        var row1 = DBService.addRowToTable(testTable, row);
-        IntType b = new IntType(4);
-        row.put("int", b);
-        var row2 = DBService.addRowToTable(testTable, row);
-        IntType c = new IntType(8);
-        row.put("int", c);
-        var row3 = DBService.addRowToTable(testTable, row);
-        var row0 = testTable.getRows().get(0);
-
-        assertThat(a.getData(), is(testTable.getCellByRowAndColumn(1, "int").getData()));
-        assertThat(testTable.getRows(), is(List.of(List.of("0"), List.of("10"), List.of("4"), List.of("8"))));
-
-        testTable.sortByColumn("int");
-
-        assertThat(testTable.getRows(), is(List.of(List.of("0"), List.of("4"), List.of("8"), List.of("10"))));
+        columns.add(new Column("string", TypeName.STRING));
+        List<List<Type>> rows1 = new ArrayList<>();
+        rows1.add(List.of(new StringType("asd")));
+        rows1.add(List.of(new StringType("btw")));
+        List<List<Type>> rows2 = new ArrayList<>();
+        rows2.add(List.of(new StringType("asd")));
+        Table testTable1 = DBService.createTable("table1", rows1, columns);
+        Table testTable2 = DBService.createTable("table2", rows2, columns);
+        Table result = DBService.subtract(List.of("table1", "table2"));
+        assertThat(result.getRows(), is(List.of(List.of("btw"))));
     }
 
     @Test
@@ -105,7 +95,7 @@ public class UnitTest {
         var db = DBService.getDBByName(dBName);
 
         assertEquals(dBName, db.getName());
-        assertEquals(1, db.getTables().size());
+        assertEquals(3, db.getTables().size());
         assertNotNull(db.getTables().get("Table"));
         assertEquals(table.getColumns(), db.getTables().get("Table").getColumns());
         assertEquals(a.getData(), db.getTables().get("Table").getRows().get(0).get(0));

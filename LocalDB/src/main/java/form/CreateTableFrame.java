@@ -1,6 +1,8 @@
 package form;
 
 import entities.Column;
+import java.util.Arrays;
+import java.util.Collections;
 import service.DBService;
 
 import javax.swing.*;
@@ -15,13 +17,13 @@ public class CreateTableFrame extends JFrame implements ActionListener {
     private JPanel columnsPanel;
     private String databaseName;
 
-    private String[] types = {"string", "int", "real", "char", "file", "interval"};
+    private String[] types = {"string", "int", "real", "char", "enum", "email"};
 
     public CreateTableFrame(String databaseName) {
         this.databaseName = databaseName;
 
         setTitle("Create table in " + databaseName);
-        setBounds(300, 90, 450, 400);
+        setBounds(600, 200, 450, 400);
         setMinimumSize(new Dimension(450, 300));
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -135,6 +137,10 @@ public class CreateTableFrame extends JFrame implements ActionListener {
                 }
                 if (item.getClass().equals(JComboBox.class)) {
                     var itemType = (JComboBox<String>) item;
+                    if (itemType.getSelectedItem() == "enum") {
+                        String enums = showEnumValuesDialog();
+                        newColumn.setEnumString(Arrays.asList(enums.split(",")));
+                    }
                     newColumn.setType(String.valueOf(itemType.getSelectedItem()));
                 }
             }
@@ -144,5 +150,23 @@ public class CreateTableFrame extends JFrame implements ActionListener {
         DBService.createTable(tableName.getText(), columns);
         DataBaseTree.getInstance().revalidateAfterTableCreation();
         this.dispose();
+    }
+    public String showEnumValuesDialog() {
+        String s = (String)JOptionPane.showInputDialog(
+            this.getParent(),
+            "Enter possible enum values using commas",
+            "Enum values",
+            JOptionPane.PLAIN_MESSAGE,
+            null,
+            null,
+            null);
+        if ((s != null) && (s.length() > 0)) {
+            return s;
+        }
+        JOptionPane.showMessageDialog(main,
+            "Enter all fields",
+            "Creation error",
+            JOptionPane.ERROR_MESSAGE);
+        return null;
     }
 }

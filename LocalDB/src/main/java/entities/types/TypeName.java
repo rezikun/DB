@@ -5,6 +5,6 @@ public enum TypeName {
     REAL,
     CHAR,
     STRING,
-    TEXT,
-    INT_INTERVAL
+    ENUM,
+    EMAIL
 }

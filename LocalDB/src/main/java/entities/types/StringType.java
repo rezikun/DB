@@ -11,6 +11,12 @@ public class StringType implements Type, Serializable{
     public StringType(String data) { this.data = data;}
 
     @Override
+    public boolean equals(Object obj) {
+        StringType s = (StringType) obj;
+        return data.equals(s.data);
+    }
+
+    @Override
     public TypeName getName() {
         return TypeName.STRING;
     }

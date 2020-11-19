@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 @Data
 public class DataBase {
-    private String name;
+    private final String name;
     private HashMap<String, Table> tables;
 
     public DataBase(String name) {

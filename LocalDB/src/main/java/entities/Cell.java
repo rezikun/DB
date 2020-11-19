@@ -14,9 +14,4 @@ public class Cell implements Serializable {
         this.data = new StringType();
     }
 
-    public Cell(Type data) {
-        this.data = data;
-    }
-
-    public static Cell Empty = new Cell();
 }

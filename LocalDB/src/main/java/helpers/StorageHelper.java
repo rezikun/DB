@@ -25,12 +25,6 @@ public final class StorageHelper {
         if (!created) {
             throw new RuntimeException("Couldn’t create specified directory");
         }
-
-        File txtFileDir = new File(storagePath + name + "/files");
-        created = txtFileDir.mkdir();
-        if (!created) {
-            throw new RuntimeException("Couldn’t create specified directory");
-        }
     }
 
     public static boolean dbIsUnique(String name) {
